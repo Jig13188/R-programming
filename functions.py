@@ -117,3 +117,22 @@ def classifaction_report_csv(report):
         report_data.append(row)
     dataframe = pd.DataFrame.from_dict(report_data)
     return dataframe
+
+def quality_report(df):
+    quality_df = pd.DataFrame()
+    quality_df['Col_Name']=df.columns.sort_values()
+    sorted_cols = df.columns.sort_values()
+    quality_df['Col_Type'] = df[sorted_cols].dtypes.values
+    quality_df['No_Of_Observations']=df[sorted_cols].apply(lambda x:len(x)).values
+    quality_df['No_Of_Missing_Rows'] = df[sorted_cols].apply(lambda x:np.sum(pd.isnull(x))).values
+    quality_df['No_Of_Uniques'] = df[sorted_cols].apply(lambda x:len(x.unique())).values
+    quality_df['Data_Avaliable'] = quality_df['No_Of_Observations']-quality_df['No_Of_Missing_Rows']
+    quality_df['AvailablePercentage']=np.round(quality_df['Data_Avaliable']/quality_df['No_Of_Observations'],2)
+    quality_df['Miss_Pct']=quality_df['No_Of_Missing_Rows']/quality_df['No_Of_Observations']
+    summary = df.describe().T.reset_index()
+    summary.columns=['Col_Name','count','Average','SD','MIN','25%','50%','75%','MAX']
+    summary.drop(['count'],axis=1,inplace=True)
+    quality_df=pd.merge(quality_df,summary,left_on='Col_Name',right_on='Col_Name',how='outer')
+    #quality_df.apply(lambda x:fillna(0, inplace=True))
+    quality_df = quality_df.fillna(0)
+    return quality_df
