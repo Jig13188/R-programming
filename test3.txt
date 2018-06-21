@@ -1,1 +1,2 @@
 empty third file trying to commit
+Modified in first branch
