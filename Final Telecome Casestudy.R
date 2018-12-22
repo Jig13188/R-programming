@@ -140,10 +140,3 @@ for (cols in cat_variables){
 
 write.csv(cont_profiling_df,"cont_profiling_df.csv")
 write.csv(cat_profiling_df,"cat_profiling_df.csv")
-
-
-
-
-for (cols in c("blck_dat_Mean","comp_dat_Mean","datovr_Mean","datovr_Range","drop_dat_Mean","mou_pead_Mean","opk_dat_Mean","plcd_dat_Mean","recv_sms_Mean","roam_Mean")){
-  print(cont_profliling(cols,2))
-}
